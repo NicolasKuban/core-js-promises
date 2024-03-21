@@ -17,9 +17,18 @@
  * 0    => promise that will be fulfilled
  * 1    => promise that will be fulfilled
  */
-function getPromise(/* number */) {
-  throw new Error('Not implemented');
+function getPromise(number) {
+  const result = new Promise(function checkNumber(resolve, reject) {
+    if (number >= 0) {
+      resolve(number);
+    } else {
+      reject(new Error('reject'));
+    }
+  });
+  return result;
 }
+
+// console.log(getPromise(-1));
 
 /**
  * Returns a promise that will always fulfilled and return a value of success or fail.
@@ -33,10 +42,25 @@ function getPromise(/* number */) {
  * Promise.resolve('success') => promise that will be fulfilled with 'success' value
  * Promise.reject('fail')     => promise that will be fulfilled with 'fail' value
  */
-function getPromiseResult(/* source */) {
-  throw new Error('Not implemented');
+function getPromiseResult(source) {
+  // return new Promise(function checkResult(resolve) {});
+  return source.then(
+    (result) => {
+      console.log(result);
+      // new Promise((resolve) => {
+      //   resolve(result);
+      // });
+    },
+    (result) => {
+      return new Promise((resolve) => {
+        resolve(result);
+      });
+    }
+  );
 }
 
+console.log(getPromiseResult(Promise.resolve('success')));
+// console.log(getPromiseResult(Promise.reject('fail')));
 /**
  * Takes an array of promises and returns a promise that resolves with the value of the first successfully resolved promise From the given array.
  * If all promises in the array are rejected, it returns a promise that is rejected.
